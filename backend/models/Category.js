@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const categorySchema = new mongoose.Schema({
   name: {
@@ -7,7 +7,7 @@ const categorySchema = new mongoose.Schema({
   },
   color: {
     type: String,
-    default: '#3B82F6', // Default blue color
+    default: "#3B82F6", // Default blue color
   },
   createdAt: {
     type: Date,
@@ -15,4 +15,4 @@ const categorySchema = new mongoose.Schema({
   },
 });
 
-module.exports = categorySchema; 
+module.exports = categorySchema;
