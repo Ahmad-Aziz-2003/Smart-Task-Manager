@@ -84,9 +84,9 @@ npm run dev
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:5000
 
-## 📋 Features
+##  Features
 
-### ✅ Completed Features
+### Completed Features
 - **User Authentication**: Register, login, and logout
 - **Task Management**: Create, read, update, delete tasks
 - **Category Management**: Organize tasks with custom categories
@@ -95,13 +95,13 @@ npm run dev
 - **Statistics Page**: View task completion stats and recent work
 - **Confirmation Modals**: Safe delete and complete actions
 
-### 🎯 Bonus Features Implemented
+### Bonus Features Implemented
 - **User Authentication**: JWT-based login/logout system
 - **Mobile Responsive**: Tailwind CSS responsive design
 - **Git Version Control**: Proper commit history and branching
 - **Statistics Dashboard**: Task completion analytics and recent activity
 
-## 📝 Assumptions Made
+## Assumptions Made
 
 - **User Category Management**: Users can create and manage their own categories
 - **Data Isolation**: Each user only sees their own tasks and categories
@@ -125,6 +125,6 @@ taskdone/
 └── README.md         # This file
 ```
 
-## 📄 License
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
