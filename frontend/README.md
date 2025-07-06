@@ -1,4 +1,4 @@
-# 🎨 Frontend - Smart Task Manager
+# Frontend - Smart Task Manager
 
 This is the React frontend application for the Smart Task Manager, built with modern React patterns and Redux Toolkit for state management.
 
@@ -74,7 +74,7 @@ frontend/
 └── README.md                # This file
 ```
 
-## 🔄 Redux State Management
+## Redux State Management
 
 Our application uses **Redux Toolkit** for centralized state management, following the feature-based architecture pattern. This approach provides predictable state updates, excellent developer tools, and easy scalability for future features.
 
@@ -97,49 +97,10 @@ The feature-based architecture makes it easy to add new functionality without af
 ### Prerequisites
 - Node.js (v16 or higher)
 - npm or yarn
-
-### Installation
-```bash
-# Install dependencies
-npm install
-
-# Create environment file
-cp .env.example .env
-
-# Add backend URL
-VITE_API_URL=http://localhost:5000
-
-# Start development server
-npm run dev
-```
-
-### Available Scripts
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-
-## 🎨 Styling
+## Styling
 
 The application uses **Tailwind CSS** for utility-first styling, providing:
 - Responsive design out of the box
 - Consistent design system
 - Small bundle size
 - Easy customization
-
-## 📱 Features
-
-- **Responsive Design**: Works on desktop, tablet, and mobile
-- **Modern UI**: Clean, professional interface with Tailwind CSS
-- **Real-time Updates**: State updates reflect immediately across components
-- **Form Validation**: Client-side validation with error handling
-- **Loading States**: Smooth loading indicators for better UX
-- **Error Handling**: Graceful error handling with user-friendly messages
-
-## 🔧 Architecture Patterns
-
-- **Feature-based Organization**: Code organized by feature rather than type
-- **Component Composition**: Reusable components with clear interfaces
-- **Container/Presentational Pattern**: Separation of logic and presentation
-- **Custom Hooks**: Shared logic extracted into reusable hooks
-- **Route-based Code Splitting**: Automatic code splitting by routes
