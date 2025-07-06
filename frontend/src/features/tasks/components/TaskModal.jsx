@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { createCategoryThunk } from '../features/categories/categoryThunks';
+import { createCategoryThunk } from '../../categories/categoryThunks';
 
 export default function TaskModal({ open, onClose, onSubmit, initialData = {}, categories = [] }) {
   const dispatch = useDispatch();

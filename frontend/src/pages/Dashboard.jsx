@@ -13,19 +13,13 @@ import {
   createCategoryThunk,
   deleteCategoryThunk,
 } from "../features/categories/categoryThunks";
-import TaskTable from "../components/TaskTable";
-import TaskModal from "../components/TaskModal";
-import TaskDetailModal from "../components/TaskDetailModal";
+import TaskTable from "../features/tasks/components/TaskTable";
+import TaskModal from "../features/tasks/components/TaskModal";
+import TaskDetailModal from "../features/tasks/components/TaskDetailModal";
 import CategoryFormModal from "../features/categories/components/CategoryFormModal";
 import CategoriesModal from "../features/categories/components/CategoriesModal";
 import RemindersModal from "../components/RemindersModal";
-import { Button } from "@mui/material";
-import {
-  FaTasks,
-  FaCalendarDay,
-  FaCheckCircle,
-  FaExclamationCircle,
-} from "react-icons/fa";
+import DashboardStatsHeader from "../components/DashboardStatsHeader";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -167,65 +161,15 @@ export default function Dashboard() {
   return (
     <div className="space-y-4 bg-gradient-to-br from-blue-50 to-teal-50 min-h-screen pb-8">
       {/* Header with Task Statistics */}
-      <div className="rounded-xl p-2 md:p-3 bg-blue-600 shadow-lg border border-blue-200">
-        <div className="flex justify-between items-center mb-2">
-          <h1 className="text-lg md:text-xl font-bold tracking-tight text-white">
-            Dashboard
-          </h1>
-          <div className="flex gap-2">
-            <button
-              onClick={handleToggleCategories}
-              className="bg-white text-blue-700 hover:bg-gray-50 text-xs md:text-sm px-3 md:px-4 py-1.5 rounded-md font-semibold shadow-md border-2 border-blue-200 transition-colors"
-            >
-              Manage Categories
-            </button>
-            <button
-              onClick={handleAddTaskClick}
-              className="bg-orange-500 text-white hover:bg-orange-600 text-xs md:text-sm px-3 md:px-4 py-1.5 rounded-md font-semibold shadow-md transition-colors"
-            >
-              + Add Task
-            </button>
-          </div>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 md:gap-2 mt-0.5">
-          <div className="bg-gradient-to-br from-white to-blue-50 rounded-lg shadow-md border border-blue-100 flex flex-col items-center py-1 px-1 md:py-2 md:px-2">
-            <FaTasks className="text-blue-600 mb-0 md:mb-0.5 text-sm md:text-base" />
-            <div className="text-sm md:text-base font-bold text-gray-800">
-              {tasks.length}
-            </div>
-            <div className="text-[8px] md:text-[10px] text-gray-600 font-medium">
-              Total Tasks
-            </div>
-          </div>
-          <div className="bg-gradient-to-br from-white to-indigo-50 rounded-lg shadow-md border border-indigo-100 flex flex-col items-center py-1 px-1 md:py-2 md:px-2">
-            <FaCalendarDay className="text-indigo-600 mb-0 md:mb-0.5 text-sm md:text-base" />
-            <div className="text-sm md:text-base font-bold text-gray-800">
-              {todayTasks.length}
-            </div>
-            <div className="text-[8px] md:text-[10px] text-gray-600 font-medium">
-              Today's Tasks
-            </div>
-          </div>
-          <div className="bg-gradient-to-br from-white to-green-50 rounded-lg shadow-md border border-green-100 flex flex-col items-center py-1 px-1 md:py-2 md:px-2">
-            <FaCheckCircle className="text-green-600 mb-0 md:mb-0.5 text-sm md:text-base" />
-            <div className="text-sm md:text-base font-bold text-gray-800">
-              {completedTasks.length}
-            </div>
-            <div className="text-[8px] md:text-[10px] text-gray-600 font-medium">
-              Completed
-            </div>
-          </div>
-          <div className="bg-gradient-to-br from-white to-red-50 rounded-lg shadow-md border border-red-100 flex flex-col items-center py-1 px-1 md:py-2 md:px-2">
-            <FaExclamationCircle className="text-red-600 mb-0 md:mb-0.5 text-sm md:text-base" />
-            <div className="text-sm md:text-base font-bold text-gray-800">
-              {overdueTasks.length}
-            </div>
-            <div className="text-[8px] md:text-[10px] text-gray-600 font-medium">
-              Overdue
-            </div>
-          </div>
-        </div>
-      </div>
+
+      <DashboardStatsHeader
+        tasks={tasks}
+        todayTasks={todayTasks}
+        completedTasks={completedTasks}
+        overdueTasks={overdueTasks}
+        handleToggleCategories={handleToggleCategories}
+        handleAddTaskClick={handleAddTaskClick}
+      />
 
       {/* Main Content */}
       <div className="grid grid-cols-1 gap-2">
