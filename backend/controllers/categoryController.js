@@ -7,9 +7,6 @@ exports.createCategory = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
-      console.log(
-        `[CATEGORY CREATE FAILED] User: ${req.user.id}, Reason: User not found`
-      );
       return res.status(404).json({ message: "User not found" });
     }
 
@@ -18,9 +15,6 @@ exports.createCategory = async (req, res) => {
       (cat) => cat.name.toLowerCase() === name.toLowerCase()
     );
     if (existingCategory) {
-      console.log(
-        `[CATEGORY CREATE FAILED] User: ${req.user.id}, Category: "${name}", Reason: Category already exists`
-      );
       return res
         .status(400)
         .json({ message: "Category with this name already exists" });
@@ -37,11 +31,8 @@ exports.createCategory = async (req, res) => {
 
     const savedCategory = user.categories[user.categories.length - 1];
 
- 
-
     res.status(201).json(savedCategory);
   } catch (err) {
-  
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -50,15 +41,11 @@ exports.getCategories = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
-   
       return res.status(404).json({ message: "User not found" });
     }
 
- 
-
     res.json(user.categories);
   } catch (err) {
-   
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -70,9 +57,6 @@ exports.updateCategory = async (req, res) => {
 
     const user = await User.findById(req.user.id);
     if (!user) {
-      console.log(
-        `[CATEGORY UPDATE FAILED] User: ${req.user.id}, Category ID: ${categoryId}, Reason: User not found`
-      );
       return res.status(404).json({ message: "User not found" });
     }
 
@@ -80,9 +64,6 @@ exports.updateCategory = async (req, res) => {
       (cat) => cat._id.toString() === categoryId
     );
     if (categoryIndex === -1) {
-      console.log(
-        `[CATEGORY UPDATE FAILED] User: ${req.user.id}, Category ID: ${categoryId}, Reason: Category not found`
-      );
       return res.status(404).json({ message: "Category not found" });
     }
 
@@ -92,9 +73,6 @@ exports.updateCategory = async (req, res) => {
         index !== categoryIndex && cat.name.toLowerCase() === name.toLowerCase()
     );
     if (nameConflict) {
-      console.log(
-        `[CATEGORY UPDATE FAILED] User: ${req.user.id}, Category: "${name}", Reason: Category name already exists`
-      );
       return res
         .status(400)
         .json({ message: "Category with this name already exists" });
@@ -108,16 +86,8 @@ exports.updateCategory = async (req, res) => {
 
     await user.save();
 
-    // Log category update
-    console.log(
-      `[CATEGORY UPDATED] User: ${req.user.id}, Category ID: ${categoryId}, Name: "${oldName}" -> "${name}"`
-    );
-
     res.json(user.categories[categoryIndex]);
   } catch (err) {
-    console.error(
-      `[CATEGORY UPDATE ERROR] User: ${req.user.id}, Category ID: ${req.params.id}, Error: ${err.message}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -128,9 +98,6 @@ exports.deleteCategory = async (req, res) => {
 
     const user = await User.findById(req.user.id);
     if (!user) {
-      console.log(
-        `[CATEGORY DELETE FAILED] User: ${req.user.id}, Category ID: ${categoryId}, Reason: User not found`
-      );
       return res.status(404).json({ message: "User not found" });
     }
 
@@ -138,9 +105,6 @@ exports.deleteCategory = async (req, res) => {
       (cat) => cat._id.toString() === categoryId
     );
     if (categoryIndex === -1) {
-      console.log(
-        `[CATEGORY DELETE FAILED] User: ${req.user.id}, Category ID: ${categoryId}, Reason: Category not found`
-      );
       return res.status(404).json({ message: "Category not found" });
     }
 
@@ -156,19 +120,8 @@ exports.deleteCategory = async (req, res) => {
       { $unset: { categoryId: "" } }
     );
 
-    // Log category deletion
-    console.log(
-      `[CATEGORY DELETED] User: ${req.user.id}, Category ID: ${categoryId}, Name: "${categoryName}"`
-    );
-    console.log(
-      `[TASKS UPDATED] Removed category from ${updatedTasks.modifiedCount} tasks`
-    );
-
     res.json({ message: "Category deleted and tasks updated" });
   } catch (err) {
-    console.error(
-      `[CATEGORY DELETE ERROR] User: ${req.user.id}, Category ID: ${req.params.id}, Error: ${err.message}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 };

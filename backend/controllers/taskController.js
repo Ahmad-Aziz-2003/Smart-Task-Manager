@@ -25,9 +25,6 @@ exports.createTask = async (req, res) => {
         (cat) => cat._id.toString() === categoryId
       );
       if (!categoryExists) {
-        console.log(
-          `[TASK CREATE FAILED] User: ${req.user.id}, Category ID: ${categoryId}, Reason: Category not found`
-        );
         return res.status(400).json({ message: "Invalid category" });
       }
       // Get category name and color for response
@@ -56,25 +53,8 @@ exports.createTask = async (req, res) => {
     taskResponse.categoryName = categoryName;
     taskResponse.categoryColor = categoryColor;
 
-    // Log task creation
-    console.log(
-      `[TASK CREATED] User: ${
-        req.user.id
-      }, Task: "${title}", Deadline: ${deadline}, Category: ${
-        categoryName || "None"
-      }, Completed: ${completed || false}, Priority: ${priority || "medium"}`
-    );
-    console.log(
-      `[TASK DETAILS] ID: ${task._id}, Description: ${
-        description || "No description"
-      }`
-    );
-
     res.status(201).json(taskResponse);
   } catch (err) {
-    console.error(
-      `[TASK CREATE ERROR] User: ${req.user.id}, Error: ${err.message}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -120,18 +100,8 @@ exports.getTasks = async (req, res) => {
       return taskObj;
     });
 
-    // Log task retrieval
-    console.log(
-      `[TASKS RETRIEVED] User: ${req.user.id}, Filter: ${
-        filter || "all"
-      }, Category: ${categoryId || "all"}, Count: ${tasksWithCategories.length}`
-    );
-
     res.json(tasksWithCategories);
   } catch (err) {
-    console.error(
-      `[TASK RETRIEVE ERROR] User: ${req.user.id}, Error: ${err.message}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -148,9 +118,6 @@ exports.updateTask = async (req, res) => {
         (cat) => cat._id.toString() === req.body.categoryId
       );
       if (!categoryExists) {
-        console.log(
-          `[TASK UPDATE FAILED] User: ${req.user.id}, Category ID: ${req.body.categoryId}, Reason: Category not found`
-        );
         return res.status(400).json({ message: "Invalid category" });
       }
       // Get category name and color for response
@@ -167,9 +134,6 @@ exports.updateTask = async (req, res) => {
       { new: true }
     );
     if (!task) {
-      console.log(
-        `[TASK UPDATE FAILED] User: ${req.user.id}, Task ID: ${req.params.id}, Reason: Task not found`
-      );
       return res.status(404).json({ message: "Task not found" });
     }
 
@@ -178,19 +142,8 @@ exports.updateTask = async (req, res) => {
     taskResponse.categoryName = categoryName;
     taskResponse.categoryColor = categoryColor;
 
-    // Log task update
-    console.log(
-      `[TASK UPDATED] User: ${req.user.id}, Task ID: ${
-        req.params.id
-      }, Title: "${task.title}", Category: ${categoryName || "None"}`
-    );
-    console.log(`[UPDATE DETAILS] Changes: ${JSON.stringify(req.body)}`);
-
     res.json(taskResponse);
   } catch (err) {
-    console.error(
-      `[TASK UPDATE ERROR] User: ${req.user.id}, Task ID: ${req.params.id}, Error: ${err.message}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -202,9 +155,6 @@ exports.deleteTask = async (req, res) => {
       userId: req.user.id,
     });
     if (!task) {
-      console.log(
-        `[TASK DELETE FAILED] User: ${req.user.id}, Task ID: ${req.params.id}, Reason: Task not found`
-      );
       return res.status(404).json({ message: "Task not found" });
     }
 
@@ -218,16 +168,8 @@ exports.deleteTask = async (req, res) => {
       categoryName = category ? category.name : "Invalid Category";
     }
 
-    // Log task deletion
-    console.log(
-      `[TASK DELETED] User: ${req.user.id}, Task ID: ${req.params.id}, Title: "${task.title}", Category: ${categoryName}`
-    );
-
     res.json({ message: "Task deleted" });
   } catch (err) {
-    console.error(
-      `[TASK DELETE ERROR] User: ${req.user.id}, Task ID: ${req.params.id}, Error: ${err.message}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -240,9 +182,6 @@ exports.markComplete = async (req, res) => {
       { new: true }
     );
     if (!task) {
-      console.log(
-        `[TASK COMPLETE FAILED] User: ${req.user.id}, Task ID: ${req.params.id}, Reason: Task not found`
-      );
       return res.status(404).json({ message: "Task not found" });
     }
 
@@ -263,19 +202,8 @@ exports.markComplete = async (req, res) => {
     taskResponse.categoryName = categoryName;
     taskResponse.categoryColor = categoryColor;
 
-    // Log task completion
-    console.log(
-      `[TASK COMPLETED] User: ${req.user.id}, Task ID: ${
-        req.params.id
-      }, Title: "${task.title}", Category: ${categoryName || "None"}`
-    );
-    console.log(`[COMPLETION TIME] ${new Date().toISOString()}`);
-
     res.json(taskResponse);
   } catch (err) {
-    console.error(
-      `[TASK COMPLETE ERROR] User: ${req.user.id}, Task ID: ${req.params.id}, Error: ${err.message}`
-    );
     res.status(500).json({ message: "Server error" });
   }
 };
