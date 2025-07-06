@@ -220,22 +220,9 @@ npm run dev
 
 ## 🏗️ Architecture & Scalability
 
-### MVC Architecture
-We use the **Model-View-Controller (MVC)** pattern for modularization and scalability. This architecture separates concerns and makes the codebase maintainable:
+Our application follows the **Model-View-Controller (MVC)** architecture pattern for better modularization and scalability. The MVC pattern separates our code into three main components: **Models** handle data structure and database operations through Mongoose schemas (User, Task, Category), **Views** present data to users through React components and API responses, and **Controllers** manage business logic and handle user requests through our Express.js controllers (authController, taskController, categoryController). This separation of concerns makes our codebase more maintainable and easier to test.
 
-- **Models**: Handle data structure and database operations (User, Task, Category schemas)
-- **Views**: Present data to users (React components and API responses)
-- **Controllers**: Manage business logic and handle user requests (authController, taskController, categoryController)
-
-### State Management with Redux
-We use **Redux Toolkit** for centralized state management, which provides:
-
-- **Predictable State Updates**: All state changes go through reducers
-- **Developer Tools**: Excellent debugging and time-travel debugging
-- **Middleware Support**: Easy to add features like logging, async actions
-- **Scalability**: Easy to add new features without breaking existing functionality
-
-This architecture ensures our application can easily scale as we add new features like real-time updates, team collaboration, or advanced analytics in the future.
+For state management, we use **Redux Toolkit** which provides centralized state management across the entire application. Redux ensures predictable state updates through reducers, offers excellent developer tools for debugging and time-travel debugging, and supports middleware for adding features like logging and async actions. This architecture makes it easy to add new features without breaking existing functionality, ensuring our application can scale smoothly as we add features like real-time updates, team collaboration, or advanced analytics in the future.
 
 ## 🛠️ Development
 
