@@ -2,6 +2,8 @@
 
 A modern task management application built with React and Node.js that helps users organize their tasks, categories, and track their productivity.
 
+- video demo link: https://drive.google.com/file/d/11wVpFPKhRrXyi3MpcyXdb4qgl3uLGX3H/view?usp=sharing
+
 ## Tech Stack
 
 ### Frontend
