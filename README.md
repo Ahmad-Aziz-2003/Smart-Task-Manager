@@ -218,28 +218,24 @@ npm run dev
 - **Task Ownership**: Tasks belong to the user who created them
 - **Optional Categories**: Tasks can exist without being assigned to a category
 
-## 🔮 Improvements for Future
+## 🏗️ Architecture & Scalability
 
-### Short-term Improvements
-- **Real-time Updates**: Add WebSocket for live task updates
-- **Task Reminders**: Email notifications for due tasks
-- **File Attachments**: Allow users to attach files to tasks
-- **Task Templates**: Pre-defined task templates for common activities
-- **Bulk Operations**: Select multiple tasks for batch actions
+### MVC Architecture
+We use the **Model-View-Controller (MVC)** pattern for modularization and scalability. This architecture separates concerns and makes the codebase maintainable:
 
-### Medium-term Improvements
-- **Team Collaboration**: Share tasks and categories with team members
-- **Task Comments**: Add discussion threads to tasks
-- **Time Tracking**: Track time spent on tasks
-- **Advanced Filters**: Date range, priority combinations
-- **Export/Import**: Backup and restore task data
+- **Models**: Handle data structure and database operations (User, Task, Category schemas)
+- **Views**: Present data to users (React components and API responses)
+- **Controllers**: Manage business logic and handle user requests (authController, taskController, categoryController)
 
-### Long-term Improvements
-- **Mobile App**: Native React Native application
-- **Calendar Integration**: Sync with Google Calendar
-- **AI Suggestions**: Smart task recommendations
-- **Advanced Analytics**: Detailed productivity insights
-- **API Documentation**: Swagger/OpenAPI documentation
+### State Management with Redux
+We use **Redux Toolkit** for centralized state management, which provides:
+
+- **Predictable State Updates**: All state changes go through reducers
+- **Developer Tools**: Excellent debugging and time-travel debugging
+- **Middleware Support**: Easy to add features like logging, async actions
+- **Scalability**: Easy to add new features without breaking existing functionality
+
+This architecture ensures our application can easily scale as we add new features like real-time updates, team collaboration, or advanced analytics in the future.
 
 ## 🛠️ Development
 
