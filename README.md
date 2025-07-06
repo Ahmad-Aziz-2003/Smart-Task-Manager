@@ -180,6 +180,12 @@ cd frontend
 # Install dependencies
 npm install
 
+# Create .env file
+cp .env.example .env
+
+# Add your backend URL to .env
+VITE_API_URL=http://localhost:5000
+
 # Start the development server
 npm run dev
 ```
