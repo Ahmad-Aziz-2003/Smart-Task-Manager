@@ -37,16 +37,11 @@ exports.createCategory = async (req, res) => {
 
     const savedCategory = user.categories[user.categories.length - 1];
 
-    // Log category creation
-    console.log(
-      `[CATEGORY CREATED] User: ${req.user.id}, Category: "${name}", ID: ${savedCategory._id}`
-    );
+ 
 
     res.status(201).json(savedCategory);
   } catch (err) {
-    console.error(
-      `[CATEGORY CREATE ERROR] User: ${req.user.id}, Error: ${err.message}`
-    );
+  
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -55,22 +50,15 @@ exports.getCategories = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
-      console.log(
-        `[CATEGORIES RETRIEVE FAILED] User: ${req.user.id}, Reason: User not found`
-      );
+   
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Log category retrieval
-    console.log(
-      `[CATEGORIES RETRIEVED] User: ${req.user.id}, Count: ${user.categories.length}`
-    );
+ 
 
     res.json(user.categories);
   } catch (err) {
-    console.error(
-      `[CATEGORY RETRIEVE ERROR] User: ${req.user.id}, Error: ${err.message}`
-    );
+   
     res.status(500).json({ message: "Server error" });
   }
 };

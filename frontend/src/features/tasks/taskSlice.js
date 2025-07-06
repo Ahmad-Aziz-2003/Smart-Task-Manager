@@ -1,22 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 import {
   fetchTasksThunk,
   createTaskThunk,
   updateTaskThunk,
   deleteTaskThunk,
   completeTaskThunk,
-} from './taskThunks';
+} from "./taskThunks";
 
 const initialState = {
   tasks: [],
   loading: false,
   error: null,
-  filter: 'all',
+  filter: "all",
   categoryId: null,
 };
 
 const taskSlice = createSlice({
-  name: 'tasks',
+  name: "tasks",
   initialState,
   reducers: {
     setFilter: (state, action) => {
@@ -58,4 +58,4 @@ const taskSlice = createSlice({
 });
 
 export const { setFilter, setCategoryId } = taskSlice.actions;
-export default taskSlice.reducer; 
+export default taskSlice.reducer;

@@ -1,16 +1,16 @@
-import axios from 'axios';
+import axios from "axios";
 
 const API = axios.create({
-  baseURL: '/api',
+  baseURL: "/api",
 });
 
 export const getCategories = (token) =>
-  API.get('/categories', {
+  API.get("/categories", {
     headers: { Authorization: `Bearer ${token}` },
   });
 
 export const createCategory = (data, token) =>
-  API.post('/categories', data, {
+  API.post("/categories", data, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -22,4 +22,4 @@ export const updateCategory = (id, data, token) =>
 export const deleteCategory = (id, token) =>
   API.delete(`/categories/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
-  }); 
+  });

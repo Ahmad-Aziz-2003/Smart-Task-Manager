@@ -1,12 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  filter: 'all', // all, today, completed, upcoming
+  filter: "all", // all, today, completed, upcoming
   categoryId: null,
 };
 
 const filterSlice = createSlice({
-  name: 'filters',
+  name: "filters",
   initialState,
   reducers: {
     setFilter: (state, action) => {
@@ -16,11 +16,11 @@ const filterSlice = createSlice({
       state.categoryId = action.payload;
     },
     resetFilters: (state) => {
-      state.filter = 'all';
+      state.filter = "all";
       state.categoryId = null;
     },
   },
 });
 
 export const { setFilter, setCategoryId, resetFilters } = filterSlice.actions;
-export default filterSlice.reducer; 
+export default filterSlice.reducer;

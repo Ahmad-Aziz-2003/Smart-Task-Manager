@@ -3,7 +3,9 @@ import React from "react";
 export default function CategoryDistribution({ categoryStats, totalTasks }) {
   return (
     <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
-      <h3 className="text-lg font-semibold text-gray-800 mb-3">Tasks by Category</h3>
+      <h3 className="text-lg font-semibold text-gray-800 mb-3">
+        Tasks by Category
+      </h3>
       <div className="space-y-3">
         {categoryStats.map((cat, index) => (
           <div key={index} className="flex items-center justify-between">
@@ -24,7 +26,9 @@ export default function CategoryDistribution({ categoryStats, totalTasks }) {
                 <div
                   className="bg-blue-600 h-1.5 rounded-full"
                   style={{
-                    width: `${totalTasks > 0 ? (cat.count / totalTasks) * 100 : 0}%`,
+                    width: `${
+                      totalTasks > 0 ? (cat.count / totalTasks) * 100 : 0
+                    }%`,
                   }}
                 ></div>
               </div>

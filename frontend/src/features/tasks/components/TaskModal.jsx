@@ -1,23 +1,29 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { createCategoryThunk } from '../../categories/categoryThunks';
+import { useState, useEffect, useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { createCategoryThunk } from "../../categories/categoryThunks";
 
-export default function TaskModal({ open, onClose, onSubmit, initialData = {}, categories = [] }) {
+export default function TaskModal({
+  open,
+  onClose,
+  onSubmit,
+  initialData = {},
+  categories = [],
+}) {
   const dispatch = useDispatch();
-  
+
   // Form state
   const [form, setForm] = useState({
-    title: '',
-    description: '',
-    categoryId: '',
-    deadline: '',
+    title: "",
+    description: "",
+    categoryId: "",
+    deadline: "",
     completed: false,
-    priority: 'medium',
+    priority: "medium",
     reminder: false,
-    reminderTime: '',
+    reminderTime: "",
   });
   const [showNewCategoryInput, setShowNewCategoryInput] = useState(false);
-  const [newCategoryName, setNewCategoryName] = useState('');
+  const [newCategoryName, setNewCategoryName] = useState("");
 
   // Initialize form only when modal opens
   useEffect(() => {
@@ -26,35 +32,38 @@ export default function TaskModal({ open, onClose, onSubmit, initialData = {}, c
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       const defaultDeadline = tomorrow.toISOString().slice(0, 16);
-      
+
       if (initialData && initialData._id) {
         // Edit mode
         setForm({
-          title: initialData.title || '',
-          description: initialData.description || '',
-          categoryId: initialData.categoryId?._id || initialData.categoryId || '',
-          deadline: initialData.deadline ? initialData.deadline.slice(0, 16) : defaultDeadline,
+          title: initialData.title || "",
+          description: initialData.description || "",
+          categoryId:
+            initialData.categoryId?._id || initialData.categoryId || "",
+          deadline: initialData.deadline
+            ? initialData.deadline.slice(0, 16)
+            : defaultDeadline,
           completed: initialData.completed || false,
-          priority: initialData.priority || 'medium',
+          priority: initialData.priority || "medium",
           reminder: initialData.reminder || false,
-          reminderTime: initialData.reminderTime || '',
+          reminderTime: initialData.reminderTime || "",
         });
       } else {
         // Create mode
         setForm({
-          title: '',
-          description: '',
-          categoryId: '',
+          title: "",
+          description: "",
+          categoryId: "",
           deadline: defaultDeadline,
           completed: false,
-          priority: 'medium',
+          priority: "medium",
           reminder: false,
-          reminderTime: '',
+          reminderTime: "",
         });
       }
-      
+
       setShowNewCategoryInput(false);
-      setNewCategoryName('');
+      setNewCategoryName("");
     }
   }, [open]); // Only depend on 'open', not 'initialData'
 
@@ -63,17 +72,17 @@ export default function TaskModal({ open, onClose, onSubmit, initialData = {}, c
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
 
     // Handle category selection
-    if (name === 'categoryId') {
-      if (value === 'other') {
+    if (name === "categoryId") {
+      if (value === "other") {
         setShowNewCategoryInput(true);
-        setForm(prev => ({ ...prev, categoryId: '' }));
+        setForm((prev) => ({ ...prev, categoryId: "" }));
       } else {
         setShowNewCategoryInput(false);
-        setNewCategoryName('');
+        setNewCategoryName("");
       }
     }
   }, []);
@@ -82,46 +91,58 @@ export default function TaskModal({ open, onClose, onSubmit, initialData = {}, c
   const handleNewCategorySubmit = useCallback(async () => {
     if (newCategoryName.trim()) {
       try {
-        const result = await dispatch(createCategoryThunk({ 
-          data: { name: newCategoryName.trim() }, 
-          token: localStorage.getItem('token') 
-        }));
+        const result = await dispatch(
+          createCategoryThunk({
+            data: { name: newCategoryName.trim() },
+            token: localStorage.getItem("token"),
+          })
+        );
         if (result.payload) {
-          setForm(prev => ({ ...prev, categoryId: result.payload._id }));
+          setForm((prev) => ({ ...prev, categoryId: result.payload._id }));
           setShowNewCategoryInput(false);
-          setNewCategoryName('');
+          setNewCategoryName("");
         }
       } catch (error) {
-        console.error('Failed to create category:', error);
+        console.error("Failed to create category:", error);
       }
     }
   }, [newCategoryName, dispatch]);
 
   // Handle form submission
-  const handleSubmit = useCallback((e) => {
-    e.preventDefault();
-    
-    // Prepare form data
-    const formData = { ...form };
-    
-    // If we have a new category name, create it first
-    if (showNewCategoryInput && newCategoryName.trim()) {
-      handleNewCategorySubmit().then(() => {
-        formData.categoryId = form.categoryId;
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      // Prepare form data
+      const formData = { ...form };
+
+      // If we have a new category name, create it first
+      if (showNewCategoryInput && newCategoryName.trim()) {
+        handleNewCategorySubmit().then(() => {
+          formData.categoryId = form.categoryId;
+          // Include _id for edit mode
+          if (initialData && initialData._id) {
+            formData._id = initialData._id;
+          }
+          onSubmit(formData);
+        });
+      } else {
         // Include _id for edit mode
         if (initialData && initialData._id) {
           formData._id = initialData._id;
         }
         onSubmit(formData);
-      });
-    } else {
-      // Include _id for edit mode
-      if (initialData && initialData._id) {
-        formData._id = initialData._id;
       }
-      onSubmit(formData);
-    }
-  }, [showNewCategoryInput, newCategoryName, handleNewCategorySubmit, onSubmit, form, initialData]);
+    },
+    [
+      showNewCategoryInput,
+      newCategoryName,
+      handleNewCategorySubmit,
+      onSubmit,
+      form,
+      initialData,
+    ]
+  );
 
   if (!open) return null;
 
@@ -135,23 +156,27 @@ export default function TaskModal({ open, onClose, onSubmit, initialData = {}, c
         >
           &times;
         </button>
-        
+
         <div className="text-center mb-6">
           <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-2xl">📝</span>
           </div>
           <h2 className="text-2xl font-bold text-gray-800">
-            {initialData && initialData._id ? 'Edit Task' : 'Create New Task'}
+            {initialData && initialData._id ? "Edit Task" : "Create New Task"}
           </h2>
           <p className="text-gray-600 mt-2">
-            {initialData && initialData._id ? 'Update your task details' : 'Add a new task to your list'}
+            {initialData && initialData._id
+              ? "Update your task details"
+              : "Add a new task to your list"}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Title */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Task Title *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Task Title *
+            </label>
             <input
               type="text"
               name="title"
@@ -165,7 +190,9 @@ export default function TaskModal({ open, onClose, onSubmit, initialData = {}, c
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Description
+            </label>
             <textarea
               name="description"
               placeholder="Enter task description..."
@@ -178,7 +205,9 @@ export default function TaskModal({ open, onClose, onSubmit, initialData = {}, c
 
           {/* Category */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Category *
+            </label>
             {!showNewCategoryInput ? (
               <select
                 name="categoryId"
@@ -189,7 +218,9 @@ export default function TaskModal({ open, onClose, onSubmit, initialData = {}, c
               >
                 <option value="">Select Category</option>
                 {categories.map((cat) => (
-                  <option key={cat._id} value={cat._id}>{cat.name}</option>
+                  <option key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </option>
                 ))}
                 <option value="other">+ Create New Category</option>
               </select>
@@ -208,8 +239,8 @@ export default function TaskModal({ open, onClose, onSubmit, initialData = {}, c
                     type="button"
                     onClick={() => {
                       setShowNewCategoryInput(false);
-                      setNewCategoryName('');
-                      setForm(prev => ({ ...prev, categoryId: '' }));
+                      setNewCategoryName("");
+                      setForm((prev) => ({ ...prev, categoryId: "" }));
                     }}
                     className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800"
                   >
@@ -230,10 +261,15 @@ export default function TaskModal({ open, onClose, onSubmit, initialData = {}, c
 
           {/* Priority */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Priority
+            </label>
             <div className="grid grid-cols-3 gap-3">
-              {['low', 'medium', 'high'].map((priority) => (
-                <label key={priority} className="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
+              {["low", "medium", "high"].map((priority) => (
+                <label
+                  key={priority}
+                  className="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
+                >
                   <input
                     type="radio"
                     name="priority"
@@ -242,12 +278,20 @@ export default function TaskModal({ open, onClose, onSubmit, initialData = {}, c
                     onChange={handleChange}
                     className="sr-only"
                   />
-                  <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
-                    form.priority === priority ? 'border-blue-500 bg-blue-500' : 'border-gray-300'
-                  }`}></div>
-                  <span className={`capitalize font-medium ${
-                    form.priority === priority ? 'text-blue-600' : 'text-gray-700'
-                  }`}>
+                  <div
+                    className={`w-4 h-4 rounded-full border-2 mr-3 ${
+                      form.priority === priority
+                        ? "border-blue-500 bg-blue-500"
+                        : "border-gray-300"
+                    }`}
+                  ></div>
+                  <span
+                    className={`capitalize font-medium ${
+                      form.priority === priority
+                        ? "text-blue-600"
+                        : "text-gray-700"
+                    }`}
+                  >
                     {priority}
                   </span>
                 </label>
@@ -257,7 +301,9 @@ export default function TaskModal({ open, onClose, onSubmit, initialData = {}, c
 
           {/* Deadline */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Deadline *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Deadline *
+            </label>
             <input
               type="datetime-local"
               name="deadline"
@@ -278,11 +324,15 @@ export default function TaskModal({ open, onClose, onSubmit, initialData = {}, c
                 onChange={handleChange}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
-              <label className="ml-2 block text-sm text-gray-900">Set Reminder</label>
+              <label className="ml-2 block text-sm text-gray-900">
+                Set Reminder
+              </label>
             </div>
             {form.reminder && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Reminder Time</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Reminder Time
+                </label>
                 <input
                   type="datetime-local"
                   name="reminderTime"
@@ -303,7 +353,9 @@ export default function TaskModal({ open, onClose, onSubmit, initialData = {}, c
               onChange={handleChange}
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
-            <label className="ml-2 block text-sm text-gray-900">Mark as completed</label>
+            <label className="ml-2 block text-sm text-gray-900">
+              Mark as completed
+            </label>
           </div>
 
           {/* Form Actions */}
@@ -319,11 +371,11 @@ export default function TaskModal({ open, onClose, onSubmit, initialData = {}, c
               type="submit"
               className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
             >
-              {initialData && initialData._id ? 'Update Task' : 'Create Task'}
+              {initialData && initialData._id ? "Update Task" : "Create Task"}
             </button>
           </div>
         </form>
       </div>
     </div>
   );
-} 
+}

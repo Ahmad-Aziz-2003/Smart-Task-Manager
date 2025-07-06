@@ -7,7 +7,7 @@ const categorySchema = new mongoose.Schema({
   },
   color: {
     type: String,
-    default: "#3B82F6", // Default blue color
+    default: "#3B82F6", 
   },
   createdAt: {
     type: Date,

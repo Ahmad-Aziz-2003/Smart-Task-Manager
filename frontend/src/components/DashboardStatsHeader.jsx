@@ -45,21 +45,27 @@ export default function DashboardStatsHeader({
           border="border-blue-100"
         />
         <StatBox
-          icon={<FaCalendarDay className="text-indigo-600 text-sm md:text-base" />}
+          icon={
+            <FaCalendarDay className="text-indigo-600 text-sm md:text-base" />
+          }
           count={todayTasks.length}
           label="Today's Tasks"
           bg="from-white to-indigo-50"
           border="border-indigo-100"
         />
         <StatBox
-          icon={<FaCheckCircle className="text-green-600 text-sm md:text-base" />}
+          icon={
+            <FaCheckCircle className="text-green-600 text-sm md:text-base" />
+          }
           count={completedTasks.length}
           label="Completed"
           bg="from-white to-green-50"
           border="border-green-100"
         />
         <StatBox
-          icon={<FaExclamationCircle className="text-red-600 text-sm md:text-base" />}
+          icon={
+            <FaExclamationCircle className="text-red-600 text-sm md:text-base" />
+          }
           count={overdueTasks.length}
           label="Overdue"
           bg="from-white to-red-50"
@@ -76,7 +82,9 @@ function StatBox({ icon, count, label, bg, border }) {
       className={`bg-gradient-to-br ${bg} rounded-lg shadow-md ${border} flex flex-col items-center py-1 px-1 md:py-2 md:px-2`}
     >
       <div className="mb-0 md:mb-0.5">{icon}</div>
-      <div className="text-sm md:text-base font-bold text-gray-800">{count}</div>
+      <div className="text-sm md:text-base font-bold text-gray-800">
+        {count}
+      </div>
       <div className="text-[8px] md:text-[10px] text-gray-600 font-medium">
         {label}
       </div>

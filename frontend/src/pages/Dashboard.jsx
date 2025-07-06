@@ -132,9 +132,7 @@ export default function Dashboard() {
 
   const handleDeleteTask = (task) => {
     console.log("Delete task called:", task);
-    if (window.confirm("Are you sure you want to delete this task?")) {
-      dispatch(deleteTaskThunk({ id: task._id, token }));
-    }
+    dispatch(deleteTaskThunk({ id: task._id, token }));
   };
 
   const handleCompleteTask = (task) => {
@@ -159,7 +157,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="space-y-4 bg-gradient-to-br from-blue-50 to-teal-50 min-h-screen pb-8">
+    <div className="space-y-2 min-h-screen pb-8">
       {/* Header with Task Statistics */}
 
       <DashboardStatsHeader

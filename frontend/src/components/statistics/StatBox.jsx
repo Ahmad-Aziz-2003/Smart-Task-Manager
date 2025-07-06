@@ -19,7 +19,9 @@ export default function StatBox({ label, value, color, icon, hint }) {
           {hint && <p className="text-xs text-gray-500">{hint}</p>}
         </div>
         <div
-          className={`w-10 h-10 ${colorMap[color]?.split(" ")[0]} rounded-full flex items-center justify-center`}
+          className={`w-10 h-10 ${
+            colorMap[color]?.split(" ")[0]
+          } rounded-full flex items-center justify-center`}
         >
           <span className="text-lg">{icon}</span>
         </div>

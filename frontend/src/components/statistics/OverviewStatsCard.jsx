@@ -12,12 +12,7 @@ export default function OverviewStatsCard({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <StatBox
-        label="Total Tasks"
-        value={totalTasks}
-        color="blue"
-        icon="📋"
-      />
+      <StatBox label="Total Tasks" value={totalTasks} color="blue" icon="📋" />
       <StatBox
         label="Completed"
         value={completedTasksCount}
@@ -25,18 +20,8 @@ export default function OverviewStatsCard({
         icon="✅"
         hint={`${completionRate}% completion rate`}
       />
-      <StatBox
-        label="Pending"
-        value={pendingTasks}
-        color="yellow"
-        icon="⏳"
-      />
-      <StatBox
-        label="Overdue"
-        value={overdueTasks}
-        color="red"
-        icon="⚠️"
-      />
+      <StatBox label="Pending" value={pendingTasks} color="yellow" icon="⏳" />
+      <StatBox label="Overdue" value={overdueTasks} color="red" icon="⚠️" />
     </div>
   );
 }

@@ -1,29 +1,30 @@
-import React, { useState } from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import TablePagination from '@mui/material/TablePagination';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SearchIcon from '@mui/icons-material/Search';
-import InputAdornment from '@mui/material/InputAdornment';
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import { format } from 'date-fns';
+import React, { useState } from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import TablePagination from "@mui/material/TablePagination";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SearchIcon from "@mui/icons-material/Search";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { format } from "date-fns";
+import ConfirmationModal from "../../../components/ConfirmationModal";
 
 const statusIcons = {
   completed: <CheckCircleIcon color="success" fontSize="small" />, // green
@@ -32,45 +33,62 @@ const statusIcons = {
 };
 
 const statusLabels = {
-  completed: 'Completed',
-  failed: 'Failed',
-  inprogress: 'In Progress',
+  completed: "Completed",
+  failed: "Failed",
+  inprogress: "In Progress",
 };
 
 function getStatus(task) {
-  if (task.completed) return 'completed';
+  if (task.completed) return "completed";
   // You can add more logic for failed/inprogress if you have such fields
-  return 'inprogress';
+  return "inprogress";
 }
 
 function getPriorityColor(priority) {
   switch (priority) {
-    case 'high': return { color: '#dc2626', bg: '#fee2e2' }; // red
-    case 'medium': return { color: '#ca8a04', bg: '#fef9c3' }; // yellow
-    case 'low': return { color: '#16a34a', bg: '#dcfce7' }; // green
-    default: return { color: '#64748b', bg: '#f1f5f9' }; // gray
+    case "high":
+      return { color: "#dc2626", bg: "#fee2e2" }; // red
+    case "medium":
+      return { color: "#ca8a04", bg: "#fef9c3" }; // yellow
+    case "low":
+      return { color: "#16a34a", bg: "#dcfce7" }; // green
+    default:
+      return { color: "#64748b", bg: "#f1f5f9" }; // gray
   }
 }
 
 const columns = [
-  { id: 'title', label: 'Task', minWidth: 150 },
-  { id: 'categoryName', label: 'Category', minWidth: 100 },
-  { id: 'createdAt', label: 'Created Date', minWidth: 120 },
-  { id: 'deadline', label: 'End Date', minWidth: 120 },
-  { id: 'priority', label: 'Priority', minWidth: 100 },
-  { id: 'status', label: 'Status', minWidth: 100 },
-  { id: 'actions', label: 'Actions', minWidth: 120 },
+  { id: "title", label: "Task", minWidth: 150 },
+  { id: "categoryName", label: "Category", minWidth: 100 },
+  { id: "createdAt", label: "Created Date", minWidth: 120 },
+  { id: "deadline", label: "End Date", minWidth: 120 },
+  { id: "priority", label: "Priority", minWidth: 100 },
+  { id: "status", label: "Status", minWidth: 100 },
+  { id: "actions", label: "Actions", minWidth: 120 },
 ];
 
-export default function TaskTable({ tasks, onEdit, onDelete, onComplete, onTaskClick, categories = [] }) {
+export default function TaskTable({
+  tasks,
+  onEdit,
+  onDelete,
+  onComplete,
+  onTaskClick,
+  categories = [],
+}) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [orderBy, setOrderBy] = useState('createdAt');
-  const [order, setOrder] = useState('desc');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
-  const [priorityFilter, setPriorityFilter] = useState('');
+  const [orderBy, setOrderBy] = useState("createdAt");
+  const [order, setOrder] = useState("desc");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [priorityFilter, setPriorityFilter] = useState("");
+
+  // Confirmation modal state
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmType, setConfirmType] = useState("danger"); // 'danger' for delete, 'success' for complete
+  const [confirmTask, setConfirmTask] = useState(null);
+  const [confirmAction, setConfirmAction] = useState(() => () => {});
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -83,20 +101,23 @@ export default function TaskTable({ tasks, onEdit, onDelete, onComplete, onTaskC
 
   const handleSort = (columnId) => {
     if (orderBy === columnId) {
-      setOrder(order === 'asc' ? 'desc' : 'asc');
+      setOrder(order === "asc" ? "desc" : "asc");
     } else {
       setOrderBy(columnId);
-      setOrder('asc');
+      setOrder("asc");
     }
   };
 
   // Filter tasks based on search and filters
-  const filteredTasks = tasks.filter(task => {
-    const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !categoryFilter || task.categoryName === categoryFilter;
+  const filteredTasks = tasks.filter((task) => {
+    const matchesSearch = task.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      !categoryFilter || task.categoryName === categoryFilter;
     const matchesStatus = !statusFilter || getStatus(task) === statusFilter;
     const matchesPriority = !priorityFilter || task.priority === priorityFilter;
-    
+
     return matchesSearch && matchesCategory && matchesStatus && matchesPriority;
   });
 
@@ -104,22 +125,27 @@ export default function TaskTable({ tasks, onEdit, onDelete, onComplete, onTaskC
   const sortedTasks = [...filteredTasks].sort((a, b) => {
     let aValue = a[orderBy];
     let bValue = b[orderBy];
-    if (orderBy === 'createdAt' || orderBy === 'deadline') {
+    if (orderBy === "createdAt" || orderBy === "deadline") {
       aValue = new Date(aValue);
       bValue = new Date(bValue);
     }
-    if (aValue < bValue) return order === 'asc' ? -1 : 1;
-    if (aValue > bValue) return order === 'asc' ? 1 : -1;
+    if (aValue < bValue) return order === "asc" ? -1 : 1;
+    if (aValue > bValue) return order === "asc" ? 1 : -1;
     return 0;
   });
 
-  const paginatedTasks = sortedTasks.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const paginatedTasks = sortedTasks.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
 
   // Get unique categories for filter
-  const uniqueCategories = [...new Set(tasks.map(task => task.categoryName).filter(Boolean))];
+  const uniqueCategories = [
+    ...new Set(tasks.map((task) => task.categoryName).filter(Boolean)),
+  ];
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-1">
       {/* Filters */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-2 p-2 bg-gray-50 rounded-lg">
         <TextField
@@ -128,11 +154,11 @@ export default function TaskTable({ tasks, onEdit, onDelete, onComplete, onTaskC
           placeholder="Search tasks..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ 
-            '& .MuiOutlinedInput-root': {
-              height: '32px',
-              fontSize: '13px'
-            }
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              height: "32px",
+              fontSize: "13px",
+            },
           }}
           InputProps={{
             startAdornment: (
@@ -142,20 +168,20 @@ export default function TaskTable({ tasks, onEdit, onDelete, onComplete, onTaskC
             ),
           }}
         />
-        
+
         <FormControl fullWidth size="small">
-          <InputLabel sx={{ fontSize: '13px' }}>Category</InputLabel>
+          <InputLabel sx={{ fontSize: "13px" }}>Category</InputLabel>
           <Select
             value={categoryFilter}
             label="Category"
             onChange={(e) => setCategoryFilter(e.target.value)}
-            sx={{ 
-              height: '32px',
-              fontSize: '13px',
-              '& .MuiSelect-select': {
-                paddingTop: '4px',
-                paddingBottom: '4px'
-              }
+            sx={{
+              height: "32px",
+              fontSize: "13px",
+              "& .MuiSelect-select": {
+                paddingTop: "4px",
+                paddingBottom: "4px",
+              },
             }}
           >
             <MenuItem value="">All Categories</MenuItem>
@@ -168,18 +194,18 @@ export default function TaskTable({ tasks, onEdit, onDelete, onComplete, onTaskC
         </FormControl>
 
         <FormControl fullWidth size="small">
-          <InputLabel sx={{ fontSize: '13px' }}>Status</InputLabel>
+          <InputLabel sx={{ fontSize: "13px" }}>Status</InputLabel>
           <Select
             value={statusFilter}
             label="Status"
             onChange={(e) => setStatusFilter(e.target.value)}
-            sx={{ 
-              height: '32px',
-              fontSize: '13px',
-              '& .MuiSelect-select': {
-                paddingTop: '4px',
-                paddingBottom: '4px'
-              }
+            sx={{
+              height: "32px",
+              fontSize: "13px",
+              "& .MuiSelect-select": {
+                paddingTop: "4px",
+                paddingBottom: "4px",
+              },
             }}
           >
             <MenuItem value="">All Status</MenuItem>
@@ -190,18 +216,18 @@ export default function TaskTable({ tasks, onEdit, onDelete, onComplete, onTaskC
         </FormControl>
 
         <FormControl fullWidth size="small">
-          <InputLabel sx={{ fontSize: '13px' }}>Priority</InputLabel>
+          <InputLabel sx={{ fontSize: "13px" }}>Priority</InputLabel>
           <Select
             value={priorityFilter}
             label="Priority"
             onChange={(e) => setPriorityFilter(e.target.value)}
-            sx={{ 
-              height: '32px',
-              fontSize: '13px',
-              '& .MuiSelect-select': {
-                paddingTop: '4px',
-                paddingBottom: '4px'
-              }
+            sx={{
+              height: "32px",
+              fontSize: "13px",
+              "& .MuiSelect-select": {
+                paddingTop: "4px",
+                paddingBottom: "4px",
+              },
             }}
           >
             <MenuItem value="">All Priorities</MenuItem>
@@ -212,24 +238,43 @@ export default function TaskTable({ tasks, onEdit, onDelete, onComplete, onTaskC
         </FormControl>
       </div>
 
-      <Paper sx={{ width: '100%', overflow: 'hidden', borderRadius: 3, boxShadow: 2 }}>
+      <Paper
+        sx={{
+          width: "100%",
+          overflow: "hidden",
+          borderRadius: 3,
+          boxShadow: 2,
+        }}
+      >
         <TableContainer sx={{ maxHeight: 600 }}>
           <Table stickyHeader aria-label="task table" size="small">
             <TableHead>
-              <TableRow sx={{ backgroundColor: '#2563eb' }}>
+              <TableRow sx={{ backgroundColor: "#2563eb" }}>
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
                     align="left"
-                    style={{ minWidth: column.minWidth, background: '#2563eb', color: 'white', fontWeight: 700, paddingTop: 8, paddingBottom: 8 }}
+                    style={{
+                      minWidth: column.minWidth,
+                      background: "#2563eb",
+                      color: "white",
+                      fontWeight: 700,
+                      paddingTop: 8,
+                      paddingBottom: 8,
+                    }}
                     sortDirection={orderBy === column.id ? order : false}
                   >
-                    {column.id !== 'actions' ? (
+                    {column.id !== "actions" ? (
                       <TableSortLabel
                         active={orderBy === column.id}
-                        direction={orderBy === column.id ? order : 'asc'}
+                        direction={orderBy === column.id ? order : "asc"}
                         onClick={() => handleSort(column.id)}
-                        sx={{ color: 'white', '& .MuiTableSortLabel-icon': { color: 'white !important' } }}
+                        sx={{
+                          color: "white",
+                          "& .MuiTableSortLabel-icon": {
+                            color: "white !important",
+                          },
+                        }}
                       >
                         {column.label}
                       </TableSortLabel>
@@ -243,55 +288,90 @@ export default function TaskTable({ tasks, onEdit, onDelete, onComplete, onTaskC
             <TableBody>
               {paginatedTasks.map((task) => {
                 const status = getStatus(task);
-                const priority = task.priority || 'medium';
+                const priority = task.priority || "medium";
                 const priorityColors = getPriorityColor(priority);
                 return (
                   <TableRow
                     hover
                     key={task._id}
-                    sx={{ cursor: 'pointer', transition: 'background 0.2s', height: 36 }}
+                    sx={{
+                      cursor: "pointer",
+                      transition: "background 0.2s",
+                      height: 36,
+                    }}
                     onClick={(e) => {
-                      if (e.target.closest('button')) return;
+                      if (e.target.closest("button")) return;
                       if (onTaskClick) onTaskClick(task);
                     }}
                   >
                     {/* Task Title */}
                     <TableCell sx={{ py: 0.5 }}>{task.title}</TableCell>
                     {/* Category */}
-                    <TableCell sx={{ py: 0.5 }}>{task.categoryName || <span style={{ color: '#64748b', fontStyle: 'italic' }}>Uncategorized</span>}</TableCell>
+                    <TableCell sx={{ py: 0.5 }}>
+                      {task.categoryName || (
+                        <span style={{ color: "#64748b", fontStyle: "italic" }}>
+                          Uncategorized
+                        </span>
+                      )}
+                    </TableCell>
                     {/* Created Date */}
-                    <TableCell sx={{ py: 0.5 }}>{task.createdAt ? format(new Date(task.createdAt), 'yyyy-MM-dd') : ''}</TableCell>
+                    <TableCell sx={{ py: 0.5 }}>
+                      {task.createdAt
+                        ? format(new Date(task.createdAt), "yyyy-MM-dd")
+                        : ""}
+                    </TableCell>
                     {/* End Date */}
-                    <TableCell sx={{ py: 0.5 }}>{task.deadline ? format(new Date(task.deadline), 'yyyy-MM-dd') : ''}</TableCell>
+                    <TableCell sx={{ py: 0.5 }}>
+                      {task.deadline
+                        ? format(new Date(task.deadline), "yyyy-MM-dd")
+                        : ""}
+                    </TableCell>
                     {/* Priority */}
                     <TableCell sx={{ py: 0.5 }}>
-                      <span style={{
-                        background: priorityColors.bg,
-                        color: priorityColors.color,
-                        borderRadius: 12,
-                        padding: '2px 10px',
-                        fontWeight: 600,
-                        fontSize: 13,
-                      }}>
+                      <span
+                        style={{
+                          background: priorityColors.bg,
+                          color: priorityColors.color,
+                          borderRadius: 12,
+                          padding: "2px 10px",
+                          fontWeight: 600,
+                          fontSize: 13,
+                        }}
+                      >
                         {priority.charAt(0).toUpperCase() + priority.slice(1)}
                       </span>
                     </TableCell>
                     {/* Status */}
                     <TableCell sx={{ py: 0.5 }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                        }}
+                      >
                         {statusIcons[status]}
-                        <span style={{
-                          color: status === 'completed' ? '#16a34a' : status === 'failed' ? '#dc2626' : '#ca8a04',
-                          fontWeight: 600,
-                          fontSize: 13,
-                        }}>{statusLabels[status]}</span>
+                        <span
+                          style={{
+                            color:
+                              status === "completed"
+                                ? "#16a34a"
+                                : status === "failed"
+                                ? "#dc2626"
+                                : "#ca8a04",
+                            fontWeight: 600,
+                            fontSize: 13,
+                          }}
+                        >
+                          {statusLabels[status]}
+                        </span>
                       </span>
                     </TableCell>
                     {/* Actions */}
                     <TableCell sx={{ py: 0.5 }}>
                       <Tooltip title="View Details">
-                        <IconButton 
-                          color="primary" 
+                        <IconButton
+                          color="primary"
                           onClick={(e) => {
                             e.stopPropagation();
                             onTaskClick && onTaskClick(task);
@@ -301,8 +381,8 @@ export default function TaskTable({ tasks, onEdit, onDelete, onComplete, onTaskC
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Edit">
-                        <IconButton 
-                          color="success" 
+                        <IconButton
+                          color="success"
                           onClick={(e) => {
                             e.stopPropagation();
                             onEdit && onEdit(task);
@@ -312,11 +392,16 @@ export default function TaskTable({ tasks, onEdit, onDelete, onComplete, onTaskC
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Complete">
-                        <IconButton 
-                          color="primary" 
+                        <IconButton
+                          color="primary"
                           onClick={(e) => {
                             e.stopPropagation();
-                            onComplete && onComplete(task);
+                            setConfirmOpen(true);
+                            setConfirmType("success");
+                            setConfirmTask(task);
+                            setConfirmAction(
+                              () => () => onComplete && onComplete(task)
+                            );
                           }}
                           disabled={task.completed}
                         >
@@ -324,11 +409,16 @@ export default function TaskTable({ tasks, onEdit, onDelete, onComplete, onTaskC
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Delete">
-                        <IconButton 
-                          color="error" 
+                        <IconButton
+                          color="error"
                           onClick={(e) => {
                             e.stopPropagation();
-                            onDelete && onDelete(task);
+                            setConfirmOpen(true);
+                            setConfirmType("danger");
+                            setConfirmTask(task);
+                            setConfirmAction(
+                              () => () => onDelete && onDelete(task)
+                            );
                           }}
                         >
                           <DeleteIcon />
@@ -340,7 +430,11 @@ export default function TaskTable({ tasks, onEdit, onDelete, onComplete, onTaskC
               })}
               {paginatedTasks.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={columns.length} align="center" sx={{ color: '#64748b', py: 6 }}>
+                  <TableCell
+                    colSpan={columns.length}
+                    align="center"
+                    sx={{ color: "#64748b", py: 6 }}
+                  >
                     No tasks found.
                   </TableCell>
                 </TableRow>
@@ -358,6 +452,24 @@ export default function TaskTable({ tasks, onEdit, onDelete, onComplete, onTaskC
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={() => {
+          confirmAction();
+          setConfirmOpen(false);
+        }}
+        title={confirmType === "danger" ? "Delete Task" : "Complete Task"}
+        message={
+          confirmType === "danger"
+            ? `Are you sure you want to delete the task "${confirmTask?.title}"? This action cannot be undone.`
+            : `Mark the task "${confirmTask?.title}" as complete?`
+        }
+        confirmText={confirmType === "danger" ? "Delete" : "Complete"}
+        cancelText="Cancel"
+        type={confirmType}
+      />
     </div>
   );
-} 
+}

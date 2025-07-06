@@ -1,17 +1,17 @@
-import axios from 'axios';
+import axios from "axios";
 
 const API = axios.create({
-  baseURL: '/api',
+  baseURL: "/api",
 });
 
 export const getTasks = (params, token) =>
-  API.get('/tasks', {
+  API.get("/tasks", {
     params,
     headers: { Authorization: `Bearer ${token}` },
   });
 
 export const createTask = (data, token) =>
-  API.post('/tasks', data, {
+  API.post("/tasks", data, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -26,6 +26,10 @@ export const deleteTask = (id, token) =>
   });
 
 export const completeTask = (id, token) =>
-  API.patch(`/tasks/${id}/complete`, {}, {
-    headers: { Authorization: `Bearer ${token}` },
-  }); 
+  API.patch(
+    `/tasks/${id}/complete`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );

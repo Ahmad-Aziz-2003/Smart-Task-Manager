@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Header({
   user,
@@ -21,8 +21,18 @@ export default function Header({
             onClick={toggleSidebar}
             className="md:hidden text-white p-2 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             </svg>
           </button>
 
@@ -31,8 +41,12 @@ export default function Header({
               <span className="text-lg sm:text-xl font-bold">📋</span>
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-lg sm:text-xl font-bold">Smart Task Manager</h1>
-              <p className="text-blue-100 text-xs sm:text-sm">Organize your life, one task at a time</p>
+              <h1 className="text-lg sm:text-xl font-bold">
+                Smart Task Manager
+              </h1>
+              <p className="text-blue-100 text-xs sm:text-sm">
+                Organize your life, one task at a time
+              </p>
             </div>
             <div className="sm:hidden">
               <h1 className="text-lg font-bold">Task Manager</h1>
@@ -44,17 +58,21 @@ export default function Header({
         <div className="hidden md:flex items-center space-x-6">
           <nav className="flex space-x-4">
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate("/")}
               className={`px-4 py-2 rounded-lg transition-colors ${
-                location.pathname === '/' ? 'bg-white bg-opacity-20 text-white' : 'text-blue-100 hover:bg-white hover:bg-opacity-10'
+                location.pathname === "/"
+                  ? "bg-white bg-opacity-20 text-white"
+                  : "text-blue-100 hover:bg-white hover:bg-opacity-10"
               }`}
             >
               📊 Dashboard
             </button>
             <button
-              onClick={() => navigate('/statistics')}
+              onClick={() => navigate("/statistics")}
               className={`px-4 py-2 rounded-lg transition-colors ${
-                location.pathname === '/statistics' ? 'bg-white bg-opacity-20 text-white' : 'text-blue-100 hover:bg-white hover:bg-opacity-10'
+                location.pathname === "/statistics"
+                  ? "bg-white bg-opacity-20 text-white"
+                  : "text-blue-100 hover:bg-white hover:bg-opacity-10"
               }`}
             >
               📈 Statistics
@@ -64,10 +82,12 @@ export default function Header({
           <div className="flex items-center space-x-4">
             <div className="text-right">
               <p className="font-medium">Welcome back,</p>
-              <p className="text-blue-100">{user?.name || 'User'}</p>
+              <p className="text-blue-100">{user?.name || "User"}</p>
             </div>
             <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-              <span className="text-lg font-bold">{user?.name?.charAt(0)?.toUpperCase() || 'U'}</span>
+              <span className="text-lg font-bold">
+                {user?.name?.charAt(0)?.toUpperCase() || "U"}
+              </span>
             </div>
             <button
               onClick={handleLogout}
@@ -85,23 +105,50 @@ export default function Header({
             className="text-white p-2 rounded-lg hover:bg-white hover:bg-opacity-10"
             aria-label="Show Reminders"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
           </button>
           <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-            <span className="text-sm font-bold">{user?.name?.charAt(0)?.toUpperCase() || 'U'}</span>
+            <span className="text-sm font-bold">
+              {user?.name?.charAt(0)?.toUpperCase() || "U"}
+            </span>
           </div>
           <button
             onClick={toggleMobileMenu}
             className="text-white p-2 rounded-lg hover:bg-white hover:bg-opacity-10"
             aria-label="Toggle mobile menu"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               {isMobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               )}
             </svg>
           </button>
@@ -115,22 +162,26 @@ export default function Header({
             <nav className="space-y-2">
               <button
                 onClick={() => {
-                  navigate('/');
+                  navigate("/");
                   closeMobileMenu();
                 }}
                 className={`w-full text-left px-4 py-3 rounded-lg ${
-                  location.pathname === '/' ? 'bg-white bg-opacity-20 text-white' : 'text-blue-100 hover:bg-white hover:bg-opacity-10'
+                  location.pathname === "/"
+                    ? "bg-white bg-opacity-20 text-white"
+                    : "text-blue-100 hover:bg-white hover:bg-opacity-10"
                 }`}
               >
                 📊 Dashboard
               </button>
               <button
                 onClick={() => {
-                  navigate('/statistics');
+                  navigate("/statistics");
                   closeMobileMenu();
                 }}
                 className={`w-full text-left px-4 py-3 rounded-lg ${
-                  location.pathname === '/statistics' ? 'bg-white bg-opacity-20 text-white' : 'text-blue-100 hover:bg-white hover:bg-opacity-10'
+                  location.pathname === "/statistics"
+                    ? "bg-white bg-opacity-20 text-white"
+                    : "text-blue-100 hover:bg-white hover:bg-opacity-10"
                 }`}
               >
                 📈 Statistics
@@ -140,11 +191,13 @@ export default function Header({
             <div className="border-t border-white border-opacity-20 pt-4">
               <div className="flex items-center space-x-3 mb-3">
                 <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                  <span className="text-lg font-bold">{user?.name?.charAt(0)?.toUpperCase() || 'U'}</span>
+                  <span className="text-lg font-bold">
+                    {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                  </span>
                 </div>
                 <div>
                   <p className="font-medium">Welcome back,</p>
-                  <p className="text-blue-100">{user?.name || 'User'}</p>
+                  <p className="text-blue-100">{user?.name || "User"}</p>
                 </div>
               </div>
               <button
