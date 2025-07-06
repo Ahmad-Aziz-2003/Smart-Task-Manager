@@ -92,11 +92,7 @@ Redux provides centralized state management that ensures all components have acc
 ### **Scalability Features**
 The feature-based architecture makes it easy to add new functionality without affecting existing code. Each feature has its own slice, thunks, and components, allowing for independent development and testing. This modular approach ensures our application can grow smoothly as we add features like real-time updates, team collaboration, or advanced analytics.
 
-## 🚀 Development
 
-### Prerequisites
-- Node.js (v16 or higher)
-- npm or yarn
 ## Styling
 
 The application uses **Tailwind CSS** for utility-first styling, providing:
