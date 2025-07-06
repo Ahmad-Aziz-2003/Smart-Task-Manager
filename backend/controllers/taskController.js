@@ -15,7 +15,6 @@ exports.createTask = async (req, res) => {
     reminderTime,
   } = req.body;
   try {
-    // Validate category if provided
     let categoryName = null;
     let categoryColor = null;
 
@@ -47,8 +46,6 @@ exports.createTask = async (req, res) => {
       reminderTime: reminderTime || null,
     });
     await task.save();
-
-    // Convert task to object and add category information
     const taskResponse = task.toObject();
     taskResponse.categoryName = categoryName;
     taskResponse.categoryColor = categoryColor;
@@ -80,11 +77,9 @@ exports.getTasks = async (req, res) => {
   try {
     const tasks = await Task.find(query);
 
-    // Get user's categories to populate category names
     const user = await User.findById(req.user.id);
     const categories = user ? user.categories : [];
 
-    // Add category names to tasks
     const tasksWithCategories = tasks.map((task) => {
       const taskObj = task.toObject();
       if (task.categoryId) {
@@ -108,7 +103,6 @@ exports.getTasks = async (req, res) => {
 
 exports.updateTask = async (req, res) => {
   try {
-    // Validate category if provided in update
     let categoryName = null;
     let categoryColor = null;
 
@@ -120,7 +114,6 @@ exports.updateTask = async (req, res) => {
       if (!categoryExists) {
         return res.status(400).json({ message: "Invalid category" });
       }
-      // Get category name and color for response
       const category = user.categories.find(
         (cat) => cat._id.toString() === req.body.categoryId
       );
@@ -137,7 +130,6 @@ exports.updateTask = async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    // Convert task to object and add category information
     const taskResponse = task.toObject();
     taskResponse.categoryName = categoryName;
     taskResponse.categoryColor = categoryColor;
@@ -158,7 +150,6 @@ exports.deleteTask = async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    // Get category name for logging
     let categoryName = "None";
     if (task.categoryId) {
       const user = await User.findById(req.user.id);
@@ -185,7 +176,6 @@ exports.markComplete = async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    // Get category information for response
     let categoryName = null;
     let categoryColor = null;
     if (task.categoryId) {
@@ -197,7 +187,6 @@ exports.markComplete = async (req, res) => {
       categoryColor = category ? category.color : "#3B82F6";
     }
 
-    // Convert task to object and add category information
     const taskResponse = task.toObject();
     taskResponse.categoryName = categoryName;
     taskResponse.categoryColor = categoryColor;

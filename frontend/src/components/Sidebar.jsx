@@ -144,13 +144,13 @@ export default function Sidebar({
               className="w-full py-2 px-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
               onClick={() => handleQuickAction("addTask")}
             >
-              ➕ Add Task
+              Add Task
             </button>
             <button
               className="w-full py-2 px-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium"
               onClick={() => handleQuickAction("reminders")}
             >
-              ⏰ Reminders ({reminderTasks})
+              Reminders ({reminderTasks})
             </button>
           </div>
         </div>
@@ -249,19 +249,14 @@ export default function Sidebar({
                 className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
                 onClick={() => handleQuickAction("addTask")}
               >
-                ➕ Add Task
+                Add Task
               </button>
-              <button
-                className="w-full py-3 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
-                onClick={() => handleQuickAction("addCategory")}
-              >
-                🏷️ Add Category
-              </button>
+
               <button
                 className="w-full py-3 px-4 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium"
                 onClick={() => handleQuickAction("reminders")}
               >
-                ⏰ Reminders ({reminderTasks})
+                Reminders ({reminderTasks})
               </button>
             </div>
           </div>

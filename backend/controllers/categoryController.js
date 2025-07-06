@@ -10,7 +10,6 @@ exports.createCategory = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Check if category name already exists for this user
     const existingCategory = user.categories.find(
       (cat) => cat.name.toLowerCase() === name.toLowerCase()
     );
@@ -67,7 +66,6 @@ exports.updateCategory = async (req, res) => {
       return res.status(404).json({ message: "Category not found" });
     }
 
-    // Check if new name conflicts with existing categories (excluding current category)
     const nameConflict = user.categories.find(
       (cat, index) =>
         index !== categoryIndex && cat.name.toLowerCase() === name.toLowerCase()
@@ -110,11 +108,9 @@ exports.deleteCategory = async (req, res) => {
 
     const categoryName = user.categories[categoryIndex].name;
 
-    // Remove category from user's categories array
     user.categories.splice(categoryIndex, 1);
     await user.save();
 
-    // Update tasks that were using this category to have no category
     const updatedTasks = await Task.updateMany(
       { categoryId: categoryId, userId: req.user.id },
       { $unset: { categoryId: "" } }
