@@ -110,6 +110,7 @@ npm run dev
 ## Architecture & Scalability
 
 Our application uses the **Model-View-Controller (MVC)** architecture for better structure and scalability. **Models** define data using **Mongoose schemas** (**User**, **Task**, **Category**), **Views** are built with **React components** and **API responses**, and **Controllers** handle business logic via **Express.js** (**auth**, **task**, **category** controllers). This separation improves **maintainability** and **testability**.
+
 We use **Redux Toolkit** for **centralized** and **predictable state management**. It supports powerful **developer tools**, **middleware**, and makes it easy to add new features like **real-time updates** or **analytics** without disrupting existing functionality.
 
 ## Improvements for Future
