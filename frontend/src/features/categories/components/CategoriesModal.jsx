@@ -1,21 +1,27 @@
-import React, { useState } from 'react';
-import { FaPlus, FaTrash } from 'react-icons/fa';
+import React, { useState } from "react";
+import { FaPlus, FaTrash } from "react-icons/fa";
 
-export default function CategoriesModal({ isOpen, onClose, categories = [], onAddCategory, onDeleteCategory }) {
-  const [newCategoryName, setNewCategoryName] = useState('');
+export default function CategoriesModal({
+  isOpen,
+  onClose,
+  categories = [],
+  onAddCategory,
+  onDeleteCategory,
+}) {
+  const [newCategoryName, setNewCategoryName] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
 
   const handleAddCategory = (e) => {
     e.preventDefault();
     if (newCategoryName.trim()) {
       onAddCategory({ name: newCategoryName.trim() });
-      setNewCategoryName('');
+      setNewCategoryName("");
       setShowAddForm(false);
     }
   };
 
   const handleDeleteCategory = (categoryId) => {
-    if (window.confirm('Are you sure you want to delete this category?')) {
+    if (window.confirm("Are you sure you want to delete this category?")) {
       onDeleteCategory(categoryId);
     }
   };
@@ -37,7 +43,10 @@ export default function CategoriesModal({ isOpen, onClose, categories = [], onAd
 
         {/* Add Category Form */}
         {showAddForm ? (
-          <form onSubmit={handleAddCategory} className="mb-6 p-4 bg-blue-50 rounded-lg">
+          <form
+            onSubmit={handleAddCategory}
+            className="mb-6 p-4 bg-blue-50 rounded-lg"
+          >
             <div className="flex gap-2">
               <input
                 type="text"
@@ -57,7 +66,7 @@ export default function CategoriesModal({ isOpen, onClose, categories = [], onAd
                 type="button"
                 onClick={() => {
                   setShowAddForm(false);
-                  setNewCategoryName('');
+                  setNewCategoryName("");
                 }}
                 className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 font-medium"
               >
@@ -77,12 +86,16 @@ export default function CategoriesModal({ isOpen, onClose, categories = [], onAd
 
         {/* Categories List */}
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold text-gray-700 mb-3">Current Categories</h3>
+          <h3 className="text-lg font-semibold text-gray-700 mb-3">
+            Current Categories
+          </h3>
           {categories.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
               <div className="text-4xl mb-2">🏷️</div>
               <p>No categories yet</p>
-              <p className="text-sm">Create your first category to organize tasks</p>
+              <p className="text-sm">
+                Create your first category to organize tasks
+              </p>
             </div>
           ) : (
             categories.map((category) => (
@@ -90,7 +103,9 @@ export default function CategoriesModal({ isOpen, onClose, categories = [], onAd
                 key={category._id}
                 className="flex items-center justify-between bg-gray-50 rounded-lg p-3 border border-gray-200 hover:bg-gray-100 transition-colors"
               >
-                <span className="text-gray-800 font-medium">{category.name}</span>
+                <span className="text-gray-800 font-medium">
+                  {category.name}
+                </span>
                 <button
                   onClick={() => handleDeleteCategory(category._id)}
                   className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-colors"
@@ -115,4 +130,4 @@ export default function CategoriesModal({ isOpen, onClose, categories = [], onAd
       </div>
     </div>
   );
-} 
+}

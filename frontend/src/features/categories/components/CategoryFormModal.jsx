@@ -1,10 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-export default function CategoryFormModal({ open, onClose, onSubmit, initialData = {} }) {
-  const [name, setName] = useState('');
+export default function CategoryFormModal({
+  open,
+  onClose,
+  onSubmit,
+  initialData = {},
+}) {
+  const [name, setName] = useState("");
 
   useEffect(() => {
-    setName(initialData?.name || '');
+    setName(initialData?.name || "");
   }, [initialData, open]);
 
   const handleSubmit = (e) => {
@@ -23,16 +28,18 @@ export default function CategoryFormModal({ open, onClose, onSubmit, initialData
         >
           &times;
         </button>
-        
+
         <div className="text-center mb-6">
           <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-2xl">🏷️</span>
           </div>
           <h2 className="text-2xl font-bold text-gray-800">
-            {initialData?.name ? 'Edit Category' : 'Add Category'}
+            {initialData?.name ? "Edit Category" : "Add Category"}
           </h2>
           <p className="text-gray-600 mt-2">
-            {initialData?.name ? 'Update your category details' : 'Create a new category for your tasks'}
+            {initialData?.name
+              ? "Update your category details"
+              : "Create a new category for your tasks"}
           </p>
         </div>
 
@@ -51,7 +58,7 @@ export default function CategoryFormModal({ open, onClose, onSubmit, initialData
               required
             />
           </div>
-          
+
           <div className="flex gap-3 pt-4">
             <button
               type="button"
@@ -64,11 +71,11 @@ export default function CategoryFormModal({ open, onClose, onSubmit, initialData
               type="submit"
               className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
             >
-              {initialData?.name ? 'Update Category' : 'Add Category'}
+              {initialData?.name ? "Update Category" : "Add Category"}
             </button>
           </div>
         </form>
       </div>
     </div>
   );
-} 
+}

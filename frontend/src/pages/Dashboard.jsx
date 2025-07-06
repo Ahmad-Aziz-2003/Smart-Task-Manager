@@ -16,8 +16,8 @@ import {
 import TaskTable from "../components/TaskTable";
 import TaskModal from "../components/TaskModal";
 import TaskDetailModal from "../components/TaskDetailModal";
-import CategoryFormModal from "../components/CategoryFormModal";
-import CategoriesModal from "../components/CategoriesModal";
+import CategoryFormModal from "../features/categories/components/CategoryFormModal";
+import CategoriesModal from "../features/categories/components/CategoriesModal";
 import RemindersModal from "../components/RemindersModal";
 import { Button } from "@mui/material";
 import {
